@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
+
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"> 新建用户 </h3>
+            </div>
+            <div class="panel-body">
+                <!--novalidate 屏蔽浏览器做的校验-->
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="form-group">
+
+                            <!--{{ field.label }} 代表field字段存储的名称 由models 创建表单时定义-->
+                            <label>{{ field.label }}</label>
+                            {{ field }}
+
+                            <!--{{ field.errors.0 }} 返回字段错误 返回信息为列表 一般取第一个.0-->
+                            <span style="color: red;">{{ field.errors.0 }}</span>
+                        </div>
+
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary">提 交</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+$(function() {
+$('.datepicker').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm:ss',  // 控制显示格式
+    useCurrent: false,  // 禁用自动选择当前时间
+    sideBySide: true,  // 启用日期和时间同时选择
+    // 其他配置项...
+});
+});
+
+

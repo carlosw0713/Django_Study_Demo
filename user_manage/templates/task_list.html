@@ -1,0 +1,219 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">添加任务</div>
+            <div class="panel-body">
+
+                <form id="formAdd">
+
+                    <div class="clearfix">
+                        {% for field in form %}
+                            <div class="col-xs-6">
+                                <div class="form-group" style="position: relative;margin-bottom: 20px;">
+                                    <label>{{ field.label }}</label>
+                                    {{ field }}
+                                    <span class="error-msg" style="color: red;position: absolute;"></span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col-xs-12" style="position: relative;margin-bottom: 20px;">
+                            <button id="btnAdd" type="button" class="btn btn-primary">提 交</button>
+                        </div >
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">任务列表</div>
+            <div class="panel-body">
+                    <!-- Table -->
+                <table class="table table-bordered">
+                <thead>
+                    <tr>
+                      <th style="background-color: #4CAF50; color: white;">ID</th>
+                      <th style="background-color: #2196F3; color: white;">等级</th>
+                      <th style="background-color: #f44336; color: white;">标题</th>
+                      <th style="background-color: #FF9800; color: white;">描述</th>
+                      <th style="background-color: #9C27B0; color: white;">管理员用户</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for obj in queryset %}
+                    <tr>
+                        <th>{{ obj.id }}</th>
+                        <td>{{ obj.get_level_display }}</td>
+                        <td>{{ obj.title }}</td>
+                        <td>{{ obj.detail }}</td>
+                        <td>{{ obj.user.name }}</td>
+
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            </div>
+
+        </div>
+
+
+       <ul class="pagination">
+            {{ page_string }}
+       </ul>
+
+        <hr>
+        <h1>AJAX学习<h1>
+<!--            <u>这段文本会有下划线</u>-->
+
+
+        <h3>示例一:通过onclick</h3>
+        <input  type="button" class="btn btn-primary" value="点击1" onclick="clickMe();"  />
+
+        <h3>示例二:通过jequry</h3>
+        <input id="btn1" type="button" class="btn btn-primary" value="点击2"  />
+
+        <h3>示例三:传送输入值</h3>
+        <input type="text" id="txtUser"  placeholder="姓名"/>
+        <input type="text" id="txtAge"   placeholder="年龄"/>
+        <input id="btn2" type="button" class="btn btn-primary" value="点击3"/>
+
+
+        <h3>示例四：表单传送</h3>
+        <form id="form3">
+            <input type="text" name="user" placeholder="姓名"/>
+            <input type="text" name="age" placeholder="年龄"/>
+            <input type="text" name="email" placeholder="邮箱"/>
+            <input type="text" name="more" placeholder="介绍"/>
+        </form>
+        <input id="btn3" type="button" class="btn btn-primary" value="点击3"/>
+
+    </div>
+
+    </div>
+
+
+
+{% block js %}
+
+  <script type="text/javascript">
+        $(function () {
+            // 页面框架加载完成之后代码自动执行
+            bindBtn1Event();
+
+            bindBtn2Event();
+
+            bindBtn3Event();
+
+            bindBtnAddEvent();
+
+        })
+
+
+        function clickMe() {
+                $.ajax({
+                    url: '/task/ajax/',
+                    type: "get",
+                    data: {
+                        n1: 123,
+                        n2: 456
+                    },
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res);
+                        console.log(res.status);
+                        console.log(res.data);
+                    }
+                })
+        }
+        
+
+        function bindBtn1Event() {
+            $("#btn1").click(function () {
+                $.ajax({
+                    url: '/task/ajax/',
+                    type: "post",
+                    data: {
+                        n1: 123,
+                        n2: 456
+                    },
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res);
+                        console.log(res.status);
+                        console.log(res.data);
+                    }
+                })
+            })
+        }
+
+        function bindBtn2Event() {
+            $("#btn2").click(function () {
+                $.ajax({
+                    url: '/task/ajax/',
+                    type: "post",
+                    data: {
+                        name: $("#txtUser").val(),
+                        age: $("#txtAge").val()
+                    },
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res);
+                        console.log(res.status);
+                        console.log(res.data);
+                    }
+                })
+            })
+        }
+
+        function bindBtn3Event() {
+            $("#btn3").click(function () {
+                $.ajax({
+                    url: '/task/ajax/',
+                    type: "post",
+                    data: $("#form3").serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res);
+                        console.log(res.status);
+                        console.log(res.data);
+                    }
+                })
+            })
+        }
+
+        function bindBtnAddEvent() {
+            $("#btnAdd").click(function () {
+                $(".error-msg").empty();
+                $.ajax({
+                    url: '/task/add/',
+                    type: "post",
+                    data: $("#formAdd").serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.status) {
+                            alert("添加成功");
+                            location.reload();
+                        } else {
+                            $.each(res.error, function (name, data) {
+                                // console.log(name,data);
+                                $("#id_" + name).next().text(data[0]);
+                            })
+                        }
+                    }
+                })
+            })
+        }
+
+    </script>
+
+
+{% endblock %}
+
+
+{% endblock %}

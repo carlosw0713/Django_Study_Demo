@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="container">
+
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                批量上传
+            </div>
+            <div class="panel-body">
+                <form method="post" enctype="multipart/form-data" action="/upload/multi/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="file" name="exc">
+                    </div>
+                    <input type="submit" value="上传" class="btn btn-info btn-sm">
+                </form>
+            </div>
+        </div>
+
+
+
+        <div style="margin-bottom: 10px">
+<!--            点击跳转到列表新增部门列表，加上 target='_blank'实现打开一个新页面跳转-->
+<!--            <a class="btn btn-success" href="/depart/add/" target="_blank">-->
+            <a class="btn btn-success" href="/depart/add/" >
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                新建部门
+            </a>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                部门列表
+            </div>
+
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for obj in queryset %}
+                    <tr>
+                        <th>{{ obj.id }}</th>
+                        <td>{{ obj.title }}</td>
+                        <td>
+                            <a class="btn btn-primary btn-xs" href="/depart/{{ obj.id }}/edit/">编辑</a>
+
+                            <!--href="/depart/delete/?nid={{ obj.id }} 相当于列表去掉用urls中 view的delete方法 并且返回字段 nid-->
+                            <a class="btn btn-danger btn-xs" href="/depart/delete/?page={{ queryset.number }}&amp;nid={{ obj.id }}">删除</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- 分页按钮展示在右下角，使用 Bootstrap 样式 -->
+            <!-- 显示当前页和总页数 -->
+            <div class="pagination justify-content-end ">
+                <ul class="pagination">
+
+                    {% if queryset.has_previous %}
+                        <!-- 如果当前页有上一页，则显示“上一页”按钮，链接到上一页的页面 -->
+                        <li class="page-item"><a class="page-link" href="?page={{ queryset.previous_page_number }}">上一页</a></li>
+                    {% endif %}
+                    {% for page_num in queryset.paginator.page_range %}
+                        {% if page_num == queryset.number %}
+                            <!-- 如果当前是选中状态，则高亮显示当前页码，不可点击 -->
+                            <li class="page-item active"><a class="page-link" href="#">{{ page_num }}</a></li>
+                        {% else %}
+                            <!-- 否则显示一个页面链接按钮，链接到指定的页面 -->
+                            <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if queryset.has_next %}
+                        <!-- 如果当前页有下一页，则显示“下一页”按钮，链接到下一页的页面 -->
+                        <li class="page-item"><a class="page-link" href="?page={{ queryset.next_page_number }}">下一页</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <p>当前页数：{{ queryset.number }}</p>
+
+             <style>
+                <!--靠右显示css文件-->
+                 .pagination {
+                  display: flex;
+                  justify-content: flex-end;
+                }
+            </style>
+
+
+        </div>
+    </div>
+
+
+{% endblock %}

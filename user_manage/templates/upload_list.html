@@ -1,0 +1,28 @@
+
+
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+
+    <div class="row">
+        <div class="panel panel-default col-sm-4 ">
+        <div class="panel-heading">open方式获取文件</div>
+        <!-- enctype="multipart/form-data" 加上该选项才可以发送文件 -->
+            <div class="panel-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text"  class="form-control  " name="username"  placeholder="请输入信息">
+                    <input type="file"  class="" name="avatar  ">
+                    <input type="submit"class="btn btn-primary  "  value="提交">
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+
+
+{% endblock %}

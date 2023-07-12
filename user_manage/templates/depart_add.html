@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="/depart/list/">返回项目列表</a>
+<!--                <button type="submit" href="/depart/list/" class="btn btn-primary ">返回项目列表</button>-->
+                <h3 class="panel-title"> 新建部门 </h3>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>标题</label>
+<!--                        <input type="text" class="form-control" placeholder="标题" name="title"/>-->
+                        <input type="text" class="form-control half-width " id="title" name="title" maxlength="50"/>
+
+<!--                        css操作使显示元素减半-->
+                        <style>
+                          .half-width {
+                            width: calc(50% - 2px);
+                            box-sizing: border-box;
+                          }
+
+                           <!--靠右显示css文件-->
+                         .pagination {
+                          float: right;
+                                        }
+
+                         </style>
+
+                    </div>
+
+                    <button type="submit" id="submitButton" class="btn btn-primary ">提 交</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

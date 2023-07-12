@@ -1,0 +1,18 @@
+{
+    "editor.fontLigatures": false,
+    "files.associations": {
+        "*.js": "javascript",
+        "*.html": "html",
+        "*.css": "css",
+        "*.json": "json",
+        "*.md": "markdown",
+        "*.py": "python",
+        "*.java": "java",
+        "*.xml": "xml",
+        "*.yaml": "yaml",
+        "*.yml": "yaml",
+        "*.go": "go",
+        "*.rb": "ruby",           
+    }
+    
+}

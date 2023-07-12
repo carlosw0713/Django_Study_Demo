@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title"> 修改部门 </h1>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+<!--                    post请求需要的操作，传一个django需要传的值-->
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>部门名称</label>
+                        <input type="text" class="form-control" placeholder="标题" name="depart_title"
+                               value="{{ edit_obj.title }}"/>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">提 交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
